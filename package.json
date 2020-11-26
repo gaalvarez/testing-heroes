@@ -33,7 +33,7 @@
         "astTransformers": [
           "jest-preset-angular/build/InlineFilesTransformer",
           "jest-preset-angular/build/StripStylesTransformer"
-       ]
+        ]
       }
     }
   },
@@ -62,6 +62,7 @@
     "@types/jest": "^26.0.15",
     "@types/node": "8.9.4",
     "codelyzer": "^5.0.1",
+    "cypress": "^6.0.0",
     "jest": "^26.6.0",
     "jest-preset-angular": "^8.3.1",
     "ts-node": "7.0.1",
