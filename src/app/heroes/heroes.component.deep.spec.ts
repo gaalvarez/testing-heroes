@@ -1,10 +1,12 @@
 import { NO_ERRORS_SCHEMA } from '@angular/core';
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
 import { of } from 'rxjs';
 import { HeroService } from '../hero.service';
+import { HeroComponent } from '../hero/hero.component';
 import { HeroesComponent } from './heroes.component';
 
-describe('HeroesComponent (shallow test)', () => {
+describe('HeroesComponent (deep test)', () => {
   let fixture: ComponentFixture<HeroesComponent>;
   let service: HeroService;
   let HEROES;
@@ -16,7 +18,7 @@ describe('HeroesComponent (shallow test)', () => {
       { id: 3, name: 'Linterna Verde', strength: 6 },
     ];
     TestBed.configureTestingModule({
-      declarations: [HeroesComponent],
+      declarations: [HeroesComponent, HeroComponent],
       schemas: [NO_ERRORS_SCHEMA],
       providers: [
         {
@@ -29,16 +31,17 @@ describe('HeroesComponent (shallow test)', () => {
     service = TestBed.get(HeroService);
   });
 
-  it('debería crearse el componente', () => {
-    expect(fixture.componentInstance).toBeTruthy();
-  });
-
-  it('debería inicializar heroes en el componente', () => {
+  it('debería renderizar un herocomponent por cada hero', () => {
     spyOn(service, 'getHeroes').and.returnValue(of(HEROES));
 
-    //NG ONINIT
+    //run ngoninit
     fixture.detectChanges();
 
-    expect(fixture.componentInstance.heroes.length).toBe(3);
+    const heroComponentDEs = fixture.debugElement.queryAll(By.directive(HeroComponent));
+    expect(heroComponentDEs.length).toBe(3);
+    for (let index = 0; index < heroComponentDEs.length; index++) {
+      const element = heroComponentDEs[index];
+      expect(element.componentInstance.hero.name).toEqual(HEROES[index].name);
+    }
   });
 });
